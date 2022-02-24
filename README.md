@@ -4,3 +4,6 @@ La primera parte del proyecto consiste en desarrollar el ejemplo del robot domé
 Además el nuevo código contará con varios supermercados que compiten por vender cerveza y ganar dinero con ello (habrá que tener en cuenta que las cervezas también tienen un coste para el agente supermarket) Inicialmente cada supermarket cuenta con una cantidad de dinero diferente para la adquisición de mercancías. El agente robot manejará también una cantidad de dinero que será proporcionada por owner para la compra de cerveza y tendrá la restricción de que no puede comprar cervezas por un valor superior al del dinero que tenga.  
 
 Otro aspecto a tener en cuenta, es que cuando el agente owner se aburra, puede solicitar la hora o intentar conversar (intercambio de mensajes) con el agente robot.
+
+
+// Xian Jimenez Nieto
