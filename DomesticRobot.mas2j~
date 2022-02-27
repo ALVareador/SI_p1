@@ -9,5 +9,6 @@ MAS domestic_robot {
     agents: myOwner;
 			myRobot;
             mySupermarket;
+			mySupermarketTwoElectricBoogaloo;
 
 }

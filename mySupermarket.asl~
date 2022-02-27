@@ -11,6 +11,9 @@ last_order_id(1).
 
 /* Plans */
 
++!ofertaBeer : orderFrom(Ag, Qtd) <-
+	gestionarInventario(Product,Qtd).
+
 +!deliverBeer : last_order_id(N) & orderFrom(Ag, Qtd) <-
 	OrderId = N + 1;
     -+last_order_id(OrderId);

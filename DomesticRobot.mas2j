@@ -8,7 +8,7 @@ MAS domestic_robot {
     environment: HouseEnv(gui) // use "nogui" as parameter to not show the GUI
     agents: myOwner;
 			myRobot;
-            mySupermarket;
 			mySupermarketTwoElectricBoogaloo;
+			mySupermarket;
 
 }

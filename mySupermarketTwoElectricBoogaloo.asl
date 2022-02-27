@@ -2,8 +2,9 @@
 
 /* Initial beliefs and rules */
 
-// Identificador de la Ãºltima orden entregada
+// Identificador de la última orden entregada
 last_order_id(1).
+stockSuper(beer, 200, 2).
 
 /* Initial goals */
 
@@ -25,3 +26,10 @@ last_order_id(1).
 +!order(beer, Qtd)[source(Ag)] <- 
 	+orderFrom(Ag, Qtd);
 	.println("Pedido de ", Qtd, " cervezas recibido de ", Ag).
+
+// plan para obtener precios
++!pedirPrecio(Producto, Qtd)[source(Ag)] : stockSuper(Producto, CantidadTotal, Precio)<- 
+	//+orderFrom(Ag, Qtd);
+	.println("Pedido de ", Qtd, " cervezas recibido de ", Ag);
+	.println("Su pedido es ", Precio, " €.");
+	.send(Ag, tell, stockSuper2(Producto, CantidadTotal, Precio)).

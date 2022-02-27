@@ -29,16 +29,16 @@ too_much(B) :-
 	!take(fridge,beer);
 	!go_at(myRobot,myOwner);
 	!hasBeer(myOwner);
-	.println("Ya he servido la cerveza y elimino la petición.");
+	.println("Ya he servido la cerveza y elimino la peticiÃ³n.");
 	.abolish(asked(Beer));
 	!bringBeer.
 +!bringBeer : not asked(beer) & not healthMsg(_) <- 
 	.wait(2000);
-	.println("Robot esperando la petición de Owner.");
+	.println("Robot esperando la peticiÃ³n de Owner.");
 	!bringBeer.
 
 +!take(fridge, beer) : not too_much(beer) <-
-	.println("El robot está cogiendo una cerveza.");
+	.println("El robot estÃ¡ cogiendo una cerveza.");
 	!check(fridge, beer).
 +!take(fridge,beer) : too_much(beer) & limit(beer, L) <-
 	.concat("The Department of Health does not allow me to give you more than ", L," beers a day! I am very sorry about that!", M);
@@ -49,23 +49,10 @@ too_much(B) :-
 	get(beer);
 	close(fridge).
 +!check(fridge, beer) : not available(beer,fridge) <-
-	!mirarCatalogo;
 	!orderBeer(mySupermarket);
 	!check(fridge, beer).
 +!check(fridge, beer) <-
 	!check(fridge, beer).
-	
-+!mirarCatalogo : not ordered(beer) <-
-	.send(mySupermarketTwoElectricBoogaloo, achieve, pedirPrecio(beer,3));
-	.send(mySupermarket, achieve, pedirPrecio(beer,3));
-	!compararPrecios.
--!mirarCatalogo.
-	
-+!compararPrecios /*: stockSuper1(Producto, CantidadTotal1, Precio1)[source(mySupermarket)]*/ <-
-	.println("-----------------------------------------------------------------------------------------------------------------");
-	.println(Producto, " - ", CantidadTotal1, " - ", Precio1).
-	//.println(Ag2, " - ", Producto, " - ", CantidadTotal2, " - ", Precio2).
--!compararPrecios.
 
 +!orderBeer(Supermarket) : not ordered(beer) <-
 	.println("El robot realiza un pedido al supermercado.");
@@ -111,4 +98,3 @@ too_much(B) :-
 	.println("Failed to achieve goal '!bring(owner,beer)'.");
 	.println("Current intention is: ", I).
 */
-
