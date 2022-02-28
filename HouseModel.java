@@ -15,6 +15,10 @@ public class HouseModel extends GridWorldModel {
     boolean carryingBeer = false; // whether the robot is carrying beer
     int sipCount        = 0; // how many sip the owner did
     int availableBeers  = 1; // how many beers are available
+	
+	int stockTotal = 0;
+	int dineroDisponible = 0;
+	int stockPrecio = 0;
 
     Location lFridge = new Location(0,0);
     Location lOwner  = new Location(GSize-1,GSize-1);

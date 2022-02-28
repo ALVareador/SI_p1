@@ -14,13 +14,7 @@ public class HouseModel extends GridWorldModel {
     boolean fridgeOpen   = false; // whether the fridge is open
     boolean carryingBeer = false; // whether the robot is carrying beer
     int sipCount        = 0; // how many sip the owner did
-    int availableBeers  = 3; // how many beers are available
-	
-	int stockSupermarket1 = 50;
-	int stockSupermarket2 = 40;
-	
-	double priceSupermarket1 = 7;
-	double priceSupermarket2 = 5;
+    int availableBeers  = 1; // how many beers are available
 
     Location lFridge = new Location(0,0);
     Location lOwner  = new Location(GSize-1,GSize-1);
@@ -90,8 +84,6 @@ public class HouseModel extends GridWorldModel {
             view.update(lFridge.x,lFridge.y);
         return true;
     }
-	
-	
 
     boolean handInBeer() {
         if (carryingBeer) {
@@ -116,3 +108,4 @@ public class HouseModel extends GridWorldModel {
         }
     }
 }
+

@@ -3,6 +3,11 @@
 // initially, I believe that there is some beer in the fridge
 available(beer,fridge).
 
+// Inialmente, el robot posee 20 euros
+cartera(20).
+mejorPrecio(2147483647).
+cantidadAOrdenar(3).
+
 // my owner should not consume more than 10 beers a day :-)
 limit(beer,5).
 
@@ -50,22 +55,52 @@ too_much(B) :-
 	close(fridge).
 +!check(fridge, beer) : not available(beer,fridge) <-
 	!mirarCatalogo;
-	!orderBeer(mySupermarket);
+	//!orderBeer(mySupermarket);
 	!check(fridge, beer).
 +!check(fridge, beer) <-
 	!check(fridge, beer).
 	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 +!mirarCatalogo : not ordered(beer) <-
 	.send(mySupermarketTwoElectricBoogaloo, achieve, pedirPrecio(beer,3));
 	.send(mySupermarket, achieve, pedirPrecio(beer,3));
+	.wait(100);
 	!compararPrecios.
--!mirarCatalogo.
++!mirarCatalogo <-
+	!mirarCatalogo.
 	
-+!compararPrecios /*: stockSuper1(Producto, CantidadTotal1, Precio1)[source(mySupermarket)]*/ <-
-	.println("-----------------------------------------------------------------------------------------------------------------");
-	.println(Producto, " - ", CantidadTotal1, " - ", Precio1).
-	//.println(Ag2, " - ", Producto, " - ", CantidadTotal2, " - ", Precio2).
++!compararPrecios : stockSuper(beer,CantidadTotal,Precio)[source(Ag)] & cartera(Din) & mejorPrecio(Max) & cantidadAOrdenar(Min) <-
+	.println(Ag, " - ", beer, " - ", CantidadTotal, " - ", Precio * 3);
+	//valorarOferta(CantidadTotal, Precio, dineroDisponible);
+	+mejorPrecio(math.min(Precio,Max));
+	.abolish(mejorPrecio(Max));
+	.println(math.min(CantidadTotal,Min));
+	+cantidadDisponible(math.min(CantidadTotal,Min));
+	//.abolish(cantidadDisponible(Min);
+	.println("---------------------------------------------------------------------------------------------------------------------1");
+	.abolish(stockSuper(beer,CantidadTotal,Precio)[source(Ag)]);
+	.println("---------------------------------------------------------------------------------------------------------------------2");
+	!compararStock;
+	.println("---------------------------------------------------------------------------------------------------------------------4");
+	.abolish(cantidadDisponible(math.min(CantidadTotal,Min))).
+	
+	
 -!compararPrecios.
+
++!compararStock : not cantidadDisponible(2) & mejorPrecio(Ofr) <-
+	.println("---------------------------------------------------------------------------------------------------------------------3");
+	.abolish(mejorPrecio(Ofr));
+	+mejorPrecio(2147483647).
+	
+
++!compararPrecios : not stockSuper(beer,CantidadTotal,Precio)[source(Ag)] & cartera(Din) & mejorPrecio(Max) <-
+	comprobarCartera(Max, Din);
+	.println("---------------------------------------------------------------------------------------------------------------------5");
+	!orderBeer(mySupermarket).
+	
+	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 +!orderBeer(Supermarket) : not ordered(beer) <-
 	.println("El robot realiza un pedido al supermercado.");
