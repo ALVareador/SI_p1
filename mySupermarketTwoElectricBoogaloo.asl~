@@ -32,4 +32,4 @@ stockSuper(beer, 200, 2).
 	//+orderFrom(Ag, Qtd);
 	.println("Pedido de ", Qtd, " cervezas recibido de ", Ag);
 	.println("Su pedido es ", Precio, " €.");
-	.send(Ag, tell, stockSuper2(Producto, CantidadTotal, Precio)).
+	.send(Ag, tell, stockSupers(Producto, CantidadTotal, Precio)).
