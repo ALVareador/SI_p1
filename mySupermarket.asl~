@@ -4,7 +4,7 @@
 
 // Identificador de la última orden entregada
 last_order_id(1).
-stockSuper(beer, 200, 1).
+stockSuper(beer, 200, 3).
 
 /* Initial goals */
 
@@ -32,5 +32,5 @@ stockSuper(beer, 200, 1).
 	//+orderFrom(Ag, Qtd);
 	.println("Pedido de ", Qtd, " cervezas recibido de ", Ag);
 	.println("Su pedido es ", Precio, " €.");
-	.send(Ag, tell, stockSuper1(Producto, CantidadTotal, Precio)).
+	.send(Ag, tell, stockSuper(Producto, CantidadTotal, Precio)).
 

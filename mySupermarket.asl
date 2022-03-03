@@ -30,7 +30,9 @@ stockSuper(beer, 200, 3).
 // plan para obtener precios
 +!pedirPrecio(Producto, Qtd)[source(Ag)] : stockSuper(Producto, CantidadTotal, Precio)<- 
 	//+orderFrom(Ag, Qtd);
+	.send(Ag, tell, stockSuper(Producto, CantidadTotal, Precio));
 	.println("Pedido de ", Qtd, " cervezas recibido de ", Ag);
-	.println("Su pedido es ", Precio, " €.");
-	.send(Ag, tell, stockSuper(Producto, CantidadTotal, Precio)).
+	.send(Ag, tell, continuar);
+	.println("Su pedido es ", Precio, " €.").
+	
 

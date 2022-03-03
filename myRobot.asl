@@ -5,8 +5,9 @@ available(beer,fridge).
 
 // Inialmente, el robot posee 20 euros
 cartera(20).
-mejorPrecio(2147483647).
+//mejorPrecio(2147483647).
 cantidadAOrdenar(3).
+supermercadoProveedor(nadie).
 
 // my owner should not consume more than 10 beers a day :-)
 limit(beer,5).
@@ -63,62 +64,69 @@ too_much(B) :-
 ////////////////////////////////////////////////////////////////////////////////
 	
 +!pedirCatagolo : not ordered(beer) & at(myRobot,fridge)<-
-	.println("---------------------------------------------------------------------------------------------------------------------0");
+	+mejorPrecio(2147483647);
+	.println("El robot está contactando con los supermecados.");
 	.send(mySupermarketTwoElectricBoogaloo, achieve, pedirPrecio(beer,3));
 	.send(mySupermarket, achieve, pedirPrecio(beer,3));
-	!mirarCatalogo.
+	!mirarCatalogo;
+	//.abolish(mejorPrecio(Ofr));
+	-+mejorPrecio(2147483647).
+	//+mejorPrecio(2147483647).
 +!pedirCatagolo.
 
 +!mirarCatalogo : not ordered(beer) <-
-	.println("---------------------------------------------------------------------------------------------------------------------1");
 	.wait(100);
 	!compararPrecios;
-	.wait(1000);
+	.wait(5000);
+	.println("---------------------------------------------------------------------------------------------------------------------0");
 	!compararCartera;
-	.abolish(mejorPrecio(Ofr));
-	+mejorPrecio(2147483647).
+	.println("---------------------------------------------------------------------------------------------------------------------2").
 +!mirarCatalogo.
 
 +!compararPrecios : stockSuper(beer,CantidadTotal,Precio)[source(Ag)] & cartera(Din) & mejorPrecio(Max) & cantidadAOrdenar(Min) <-
-	.println(Ag, " - ", beer, " - ", CantidadTotal, " - ", Precio * 3);
-	.println(math.min(Precio,Max));
+	.println("El supermercado ", Ag, " me ofrece 'beer' a ", Precio, " € la unidad.");
 	+mejorPrecio(math.min(Precio,Max));
-	.abolish(mejorPrecio(Max));
-	.println(math.min(CantidadTotal,Min));
+	//.wait(5000);
+	.println("---------------------------------------------------------------------------------------------------------------------1");
+	//.abolish(mejorPrecio(Max));
+	//.wait(5000);
 	+cantidadDisponible(math.min(CantidadTotal,Min));
+	!seleccionarSupermercado(Ag);
 	//.abolish(cantidadDisponible(Min);
-	.println("---------------------------------------------------------------------------------------------------------------------2");
 	.abolish(stockSuper(beer,CantidadTotal,Precio)[source(Ag)]);
-	.println("---------------------------------------------------------------------------------------------------------------------3");
 	!compararStock;
-	.println("---------------------------------------------------------------------------------------------------------------------4");
+	.println("La mejor oferta es ", Max, ".");
 	.abolish(cantidadDisponible(math.min(CantidadTotal,Min))).
-	//!mirarCatalogo.
 +!compararPrecios.
+
++!seleccionarSupermercado(Ag) : stockSuper(beer,CantidadTotal,Precio)[source(Ag)] & mejorPrecio(Precio) & supermercadoProveedor(LastAg) <-
+	.abolish(supermercadoProveedor(LastAg));
+	+supermercadoProveedor(Ag).
++!seleccionarSupermercado(Ag).
 
 +!compararCartera : not stockSuper(beer,CantidadTotal,Precio)[source(Ag)] & cartera(Din) & mejorPrecio(Max) <-
 	.wait(1000);
-	.println("---------------------------------------------------------------------------------------------------------------------5");
-	.println(Din, "  ", Max, "  ", math.min(Din, Max));
+	.println("Tengo ", Din, " € en mi cartera.");
 	+recibo(math.min(Din, Max));
-	//comprobarCartera(Max, Din);
 	!realizarPedido;
-	.abolish(recibo(math.min(Din, Max)));
-	.println("---------------------------------------------------------------------------------------------------------------------6").
+	.abolish(recibo(math.min(Din, Max))).
+	//.println("---------------------------------------------------------------------------------------------------------------------6").
 	
 +!compararCartera /*: stockSuper(beer,CantidadTotal,Precio)[source(Ag)] & cartera(Din) & mejorPrecio(Max) */<-
 	!mirarCatalogo.
 	
-+!realizarPedido : recibo(Ofr) & mejorPrecio(Ofr) & cartera(Din)<-
-	.println("---------------------------------------------------------------------------------------------------------------------7");
-	+cartera(Din - Ofr);
++!realizarPedido : recibo(Ofr) & mejorPrecio(Ofr) & cartera(Din) & supermercadoProveedor(Ag)<-
+	//.println("---------------------------------------------------------------------------------------------------------------------7");
+	+cartera(Din - (Ofr * 3));
 	.abolish(cartera(Din));
-	!orderBeer(mySupermarket).
-+!realizarPedido.
+	.println("Tras la compra, tengo ", (Din - (Ofr * 3)), " € en mi cartera.");
+	!orderBeer(Ag).
++!realizarPedido <-
+	.println("No tengo suficiente dinero en mi cartera.").
 
 
 +!compararStock : not cantidadDisponible(3) & mejorPrecio(Ofr) <-
-	.println("---------------------------------------------------------------------------------------------------------------------8");
+	.println("Sin embargo, no posee suficientes unidades.");
 	.abolish(mejorPrecio(Ofr));
 	+mejorPrecio(2147483647).
 +!compararStock.
@@ -149,7 +157,7 @@ too_much(B) :-
      !go_at(myRobot,P).
 
 // when the supermarket makes a delivery, try the 'has' goal again
-+delivered(beer,_Qtd,_OrderId)[source(mySupermarket)] <- 
++delivered(beer,_Qtd,_OrderId) <- 
 	+available(beer,fridge);
 	-ordered(beer).
 
