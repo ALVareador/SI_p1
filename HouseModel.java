@@ -20,7 +20,7 @@ public class HouseModel extends GridWorldModel {
 
     Location lFridge = new Location(0,0);
     Location lOwner  = new Location(GSize-1,GSize-1);
-	Location lTrash  = new Location(lFridge, lFridge+1);
+	Location lTrash  = new Location(0,1);
 
     public HouseModel() {
         // create a 7x7 grid with one mobile agent
@@ -109,7 +109,7 @@ public class HouseModel extends GridWorldModel {
                 view.update(lOwner.x,lOwner.y);
             return true;
         } else {
-	//		emptyBeers++;
+			emptyBeers++;
             return false;
         }
     }

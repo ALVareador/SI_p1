@@ -69,7 +69,7 @@ public class HouseEnv extends Environment {
 		if (model.emptyBeers > 0){
 			addPercept("myRobot", tb);
 		}
-
+	}
 
     @Override
     public boolean executeAction(String ag, Structure action) {
@@ -88,6 +88,8 @@ public class HouseEnv extends Environment {
                 dest = model.lFridge;
             } else if (l.equals("myOwner")) {
                 dest = model.lOwner;
+			} else if (l.equals("trash")) {
+                dest = model.lTrash;
             }
 
             try {

@@ -44,10 +44,10 @@ public class HouseView extends GridWorldView {
             break;
 		case HouseModel.TRASH:
             if (lRobot.equals(hmodel.lTrash)) {
-                super.drawAgent(g, x, y, Color.grey, -1);
+                super.drawAgent(g, x, y, Color.blue, -1);
             }
             g.setColor(Color.black);
-            drawString(g, x, y, defaultFont, "Trash ("+hmodel.availableBeers+")");
+            drawString(g, x, y, defaultFont, "Trash ("+hmodel.emptyBeers+")");
             break;
         }
         repaint();

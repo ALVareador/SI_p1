@@ -31,9 +31,6 @@ too_much(B) :-
 	!hasBeer(myOwner);
 	.println("Ya he servido la cerveza y elimino la petici√≥n.");
 	.abolish(asked(Beer));
-	.wait(2000);
-	!go_at(myRobot,trash);
-	!throwBeer;
 	!bringBeer.
 +!bringBeer : not asked(beer) & not healthMsg(_) <- 
 	.wait(2000);
@@ -75,20 +72,10 @@ too_much(B) :-
 	//.abolish(msg(_));
 	.send(myOwner,tell,msg(M)).
 
-	// --------------------------------------------------------------------------------
 +!go_at(myRobot,P) : at(myRobot,P) <- true.
-+!go_at(myRobot,P) : not at(myRobot,P) <-   	
-	move_towards(P);
++!go_at(myRobot,P) : not at(myRobot,P)
+  <- move_towards(P);
      !go_at(myRobot,P).
-
-+!throwBeer <- 
-	.println("Tirando la botella vacÌa");
-	throw(beer).
-	
-	
-	
-	// --------------------------------------------------------------------------------
-
 
 // when the supermarket makes a delivery, try the 'has' goal again
 +delivered(beer,_Qtd,_OrderId)[source(mySupermarket)] <- 
