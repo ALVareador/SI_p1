@@ -42,13 +42,6 @@ public class HouseView extends GridWorldView {
             g.setColor(Color.black);
             drawString(g, x, y, defaultFont, o);
             break;
-		case HouseModel.TRASH:
-            if (lRobot.equals(hmodel.lTrash)) {
-                super.drawAgent(g, x, y, Color.blue, -1);
-            }
-            g.setColor(Color.black);
-            drawString(g, x, y, defaultFont, "Trash ("+hmodel.emptyBeers+")");
-            break;
         }
         repaint();
     }
@@ -65,4 +58,3 @@ public class HouseView extends GridWorldView {
         }
     }
 }
-

@@ -12,9 +12,16 @@ public class HouseEnv extends Environment {
     public static final Literal hb  = Literal.parseLiteral("hand_in(beer)");
     public static final Literal sb  = Literal.parseLiteral("sip(beer)");
     public static final Literal hob = Literal.parseLiteral("has(myOwner,beer)");
+<<<<<<< Updated upstream
+=======
+	public static final Literal tb = Literal.parseLiteral("throw(beer)");
+	public static final Literal et = Literal.parseLiteral("empty(trash)");
+>>>>>>> Stashed changes
 
     public static final Literal af = Literal.parseLiteral("at(myRobot,fridge)");
     public static final Literal ao = Literal.parseLiteral("at(myRobot,myOwner)");
+	public static final Literal at = Literal.parseLiteral("at(myRobot,trash)");
+
 
     static Logger logger = Logger.getLogger(HouseEnv.class.getName());
 
@@ -48,6 +55,9 @@ public class HouseEnv extends Environment {
         if (lRobot.equals(model.lOwner)) {
             addPercept("myRobot", ao);
         }
+		if(lRobot.equals(model.lTrash)){
+			addPercept("myRobot", at);
+		}
 
         // add beer "status" the percepts
         if (model.fridgeOpen) {
@@ -58,9 +68,17 @@ public class HouseEnv extends Environment {
             addPercept("myRobot", hob);
             addPercept("myOwner", hob);
         }
-    }
-
-
+// ----------------------------------------------------------------------------------		
+		if (model.emptyBeers > 0){
+			addPercept("myRobot", tb);
+		}
+	/*	
+		if(model.emptyTrash){
+			addPercept("reciclaBot", et);
+		}
+	*/	
+// ---------------------------------------------------------------------------------
+	}
     @Override
     public boolean executeAction(String ag, Structure action) {
         System.out.println("["+ag+"] doing: "+action);
@@ -78,6 +96,8 @@ public class HouseEnv extends Environment {
                 dest = model.lFridge;
             } else if (l.equals("myOwner")) {
                 dest = model.lOwner;
+			} else if (l.equals("trash")) {
+                dest = model.lTrash;
             }
 
             try {
@@ -103,8 +123,17 @@ public class HouseEnv extends Environment {
             } catch (Exception e) {
                 logger.info("Failed to execute action deliver!"+e);
             }
-
-        } else {
+//	----------------------------------------------------------------------------------------------
+			
+        } else if (action.equals(tb)) {
+			result = model.throwBeer();
+			
+		} else if (action.equals(et)) {
+			result = model.emptyTrash();
+		}
+//	----------------------------------------------------------------------------------------------
+		
+		else {
             logger.info("Failed to execute action "+action);
         }
 

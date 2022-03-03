@@ -11,12 +11,26 @@ too_much(B) :-
    .count(consumed(YY,MM,DD,_,_,_,B),QtdB) &
    limit(B,Limit) &
    QtdB > Limit.
+   
+actual(1).
+mensaje(1,"chiste1").
+mensaje(2,"chiste2").
 
 /* Initial goals */
 
 !bringBeer.
 
 /* Plans */
+
++!geet : actual(Ord) & mensaje(Ord,M) <- .println(M);
+	.send(myOwner,tell,new(Ord+1)).
+	-!geet.
+
++new(NewOrd) : actual(Ord) <-
+	.abolish(actual(Ord));
+	.abolish(new(_));
+	+actual(NewOrd);
+	!geet.
 
 +!bring(myOwner, beer) <-
 	+asked(beer).
@@ -31,6 +45,9 @@ too_much(B) :-
 	!hasBeer(myOwner);
 	.println("Ya he servido la cerveza y elimino la peticiÃ³n.");
 	.abolish(asked(Beer));
+	.wait(2000);
+	!go_at(myRobot,trash);
+	!throwBeer;
 	!bringBeer.
 +!bringBeer : not asked(beer) & not healthMsg(_) <- 
 	.wait(2000);
@@ -76,6 +93,10 @@ too_much(B) :-
 +!go_at(myRobot,P) : not at(myRobot,P)
   <- move_towards(P);
      !go_at(myRobot,P).
+	 
++!throwBeer <- 
+	.println("Tirando la botella vacía");
+	throw(beer).
 
 // when the supermarket makes a delivery, try the 'has' goal again
 +delivered(beer,_Qtd,_OrderId)[source(mySupermarket)] <- 
@@ -92,9 +113,12 @@ too_much(B) :-
 +?time(T) : true
   <-  time.check(T).
 
+<<<<<<< Updated upstream
 /*
 -!bringBeer : true <-
 	.current_intention(I);
 	.println("Failed to achieve goal '!bring(owner,beer)'.");
 	.println("Current intention is: ", I).
 */
+=======
+>>>>>>> Stashed changes
